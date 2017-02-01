@@ -1,43 +1,52 @@
-float x=0, y=0;
+float x=400, y=400;
 int step=10;
 
 void setup(){
 	size(800, 800);
 	strokeWeight(3);
+    ArrayList<String> O1 = new ArrayList<String>();
+    ArrayList<String> temp = new ArrayList<String>();
+    O1.add("LEFT");
+    for (String s:createF1(O1))
+    	temp.add(reverseDir(s));
+    for (String s:O1)
+    	temp.add(s);
+	println(temp);
+
+	drawDragon(temp, createF1(temp));
 }
 void draw(){
-	background(255);
-	drawDragon(dragon(20), rotateDir(dragon(20)));
+	point(400, 400);
 }
 ArrayList<String> dragon(int len){
-	if(len == 0){   
-    ArrayList<String> temp = new ArrayList<String>();
-    temp.add("LEFT");
-    return temp;
+	if(len <= 0){   
+	    ArrayList<String> temp = new ArrayList<String>();
+	    temp.add("LEFT");
+	    return temp;
   }
 	else{
-    return dragon(len-1);
+    	return O1andF1toO2(dragon(len-1), createF1(dragon(len-1)));
   }
 }
 
 //allows for each layer of dragon to increment itself
 ArrayList<String> O1andF1toO2(ArrayList<String> O1, ArrayList<String> F1){
 	ArrayList<String> temp = new ArrayList<String>();
-	for(String s:F1)
-		temp.add(reverseDir(s));
+	for(int i=F1.size()-1; i<0; i--)
+		temp.add(reverseDir(F1.get(i)));
 	for(String s:O1)
 		temp.add(s);
 	return temp;
 }
 
 //also creates F1 based on O1
-ArrayList<String> rotateDir(ArrayList<String> O1){
+ArrayList<String> createF1(ArrayList<String> O1){
 	ArrayList<String> temp = new ArrayList<String>();
 	for(String s:O1){
-		if (s.equals("LEFT")) {temp.add("UP");}
-		if (s.equals("LEFT")) {temp.add("DOWN");}
-		if (s.equals("LEFT")) {temp.add("RIGHT");}
-		if (s.equals("LEFT")) {temp.add("LEFT");}
+		if (s.equals("RIGHT")) temp.add("UP");
+		if (s.equals("LEFT")) temp.add("DOWN");
+		if (s.equals("UP")) temp.add("RIGHT");
+		if (s.equals("DOWN")) temp.add("LEFT");
 	}
 	return temp;
 }
@@ -72,6 +81,8 @@ void drawDragon(ArrayList<String> o1, ArrayList<String> f1){
 	y=origY;
 	for(String dir:f1)
 		go(dir);
+	x=origX;
+	y=origY;
 }
 
 //accessory function for O1andF1toO2
