@@ -1,7 +1,5 @@
 float x=0, y=0;
 int step=10;
-ArrayList<String> o1 = new ArrayList(String);
-ArrayList<String> f1 = new ArrayList(String);
 
 void setup(){
 	size(800, 800);
@@ -9,26 +7,32 @@ void setup(){
 }
 void draw(){
 	background(255);
-	drawDragon(o1, f1);
+	drawDragon(dragon(20), rotateDir(dragon(20)));
 }
-void dragon(int len){
-	if(len == 0)   //do something
-	else //do something else
+ArrayList<String> dragon(int len){
+	if(len == 0){   
+    ArrayList<String> temp = new ArrayList<String>();
+    temp.add("LEFT");
+    return temp;
+  }
+	else{
+    return dragon(len-1);
+  }
 }
 
 //allows for each layer of dragon to increment itself
-void O1andF1toO2(ArrayList O1, ArrayList F1){
-	ArrayList<String> temp;
+ArrayList<String> O1andF1toO2(ArrayList<String> O1, ArrayList<String> F1){
+	ArrayList<String> temp = new ArrayList<String>();
 	for(String s:F1)
 		temp.add(reverseDir(s));
 	for(String s:O1)
 		temp.add(s);
-	o1 = temp;
+	return temp;
 }
 
 //also creates F1 based on O1
-ArrayList rotateDir(ArrayList O1){
-	ArrayList<String> temp = new ArrayList(String);
+ArrayList<String> rotateDir(ArrayList<String> O1){
+	ArrayList<String> temp = new ArrayList<String>();
 	for(String s:O1){
 		if (s.equals("LEFT")) {temp.add("UP");}
 		if (s.equals("LEFT")) {temp.add("DOWN");}
@@ -59,7 +63,8 @@ void go(String dir){
 	}
 }
 
-void drawDragon(ArrayList o1, ArrayList f1){
+void drawDragon(ArrayList<String> o1, ArrayList<String> f1){
+  //I could probably make it so this function finds f1 by itself...
 	float origX=x, origY=y;
 	for(String dir:o1)
 		go(dir);
