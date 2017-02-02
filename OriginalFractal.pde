@@ -18,8 +18,6 @@ void setup(){
 		O1=createF1(temp);
     }
     */
-
-	drawDragon(dragon(10));
 }
 
 void draw(){
@@ -81,13 +79,8 @@ void go(String dir){
 }
 
 void drawDragon(ArrayList<String> o1){
-  //I could probably make it so this function finds f1 by itself...
 	float origX=x, origY=y;
 	for(String dir:o1)
-		go(dir);
-	x=origX;
-	y=origY;
-	for(String dir:createF1(o1))
 		go(dir);
 	x=origX;
 	y=origY;
