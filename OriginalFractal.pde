@@ -1,15 +1,16 @@
 float x,y;
-float step=1;
-
+float step=30;
+int q = 0;
+boolean t = false;
 //preload the direction set in setup so that draw doesnt take too long
 ArrayList<Character> n=new ArrayList<Character>();
 
 void setup(){
-	size(1400, 900);
-	strokeWeight(1);
+	size(800, 900);
+	strokeWeight(5);
 	fill(0);
 	textAlign(CENTER);
-	textSize(44);
+	textSize(20);
 
 	//set where the fractal starts at
 	x=width/2;
@@ -18,16 +19,20 @@ void setup(){
 	text("Loading... \nIt might take a while...", width/2, height/2);
 	
 	//preload direction set to draw
-    n=dragon(17);
+    n=dragon(q);
 }
 
 void draw(){
 	background(250);
+	n=dragon(q);
 	drawDragon(n);
+	text(q+" recursions",100, 100);
+	if(t && frameCount%15==0) q++;
 }
 void mousePressed(){
-	step++;
-	n=dragon(17);
+	//step++;
+	//n=dragon(17);
+	t=true;
 	x=width/2;
 	y=height/2;
 }
