@@ -1,98 +1,108 @@
-float x=500, y=600;
-float step=0.5;
-int n=1;
+float x,y;
+float step=1;
+
+//preload the direction set in setup so that draw doesnt take too long
+ArrayList<Character> n=new ArrayList<Character>();
 
 void setup(){
-	size(800, 800);
-	background(250);
+	size(1400, 900);
 	strokeWeight(1);
-    
-    /*
-    ArrayList<String> O1 = new ArrayList<String>();
-    ArrayList<String> temp = new ArrayList<String>();
-    O1.add("LEFT");
+	fill(0);
+	textAlign(CENTER);
+	textSize(44);
 
-    //makes temp into o2
-    for(int i = 0; i<18; i++){
-    	temp = O1andF1toO2(O1);
-		O1=createF1(temp);
-    }
-    */
+	//set where the fractal starts at
+	x=width/2;
+	y=height/2;
+
+	text("Loading... \nIt might take a while...", width/2, height/2);
+	
+	//preload direction set to draw
+    n=dragon(17);
 }
 
 void draw(){
-	drawDragon(dragon(n));
-	if (n<25) n++;
+	background(250);
+	drawDragon(n);
+}
+void mousePressed(){
+	step++;
+	n=dragon(17);
+	x=width/2;
+	y=height/2;
+}
+void keyPressed(){
+	step=1;
+	n=dragon(17);
 }	
-ArrayList<String> dragon(int len){
+ArrayList<Character> dragon(int len){
 	if(len <= 0){   
-	    ArrayList<String> temp = new ArrayList<String>();
-	    temp.add("LEFT");
+	    ArrayList<Character> temp = new ArrayList<Character>();
+	    temp.add('L');
 	    return temp;
   	}
-	else{
+	else
     	return O1andF1toO2(createF1(dragon(len-1)));
-  	}
 }
 
 //allows for each layer of dragon to increment itself
-ArrayList<String> O1andF1toO2(ArrayList<String> O1){
-	ArrayList<String> temp = new ArrayList<String>();
-	for(String s:createF1(O1))
+ArrayList<Character> O1andF1toO2(ArrayList<Character> O1){
+	ArrayList<Character> temp = new ArrayList<Character>();
+	for(Character s:createF1(O1))
 		temp.add(reverseDir(s));
-	for(String s:O1)
+	for(Character s:O1)
 		temp.add(s);
 	return temp;
 }
 
 //also creates F1 based on O1
-ArrayList<String> createF1(ArrayList<String> O1){
-	ArrayList<String> temp = new ArrayList<String>();
-	for(String s:O1){
-		if (s.equals("RIGHT")) temp.add("DOWN");
-		if (s.equals("LEFT")) temp.add("UP");
-		if (s.equals("UP")) temp.add("RIGHT");
-		if (s.equals("DOWN")) temp.add("LEFT");
+ArrayList<Character> createF1(ArrayList<Character> O1){
+	ArrayList<Character> temp = new ArrayList<Character>();
+	for(Character s:O1){
+		if (s==('R')) temp.add('D');
+		if (s==('L')) temp.add('U');
+		if (s==('U')) temp.add('R');
+		if (s==('D')) temp.add('L');
 	}
 	return temp;
 }
 
-void go(String dir){
+//draws fractal based on direction array
+void go(Character dir){
 	switch(dir){
-		case "LEFT":
+		case 'L':
 			line(x, y, x+step, y);
 			x+=step;
 			break;
-		case "RIGHT":
+		case 'R':
 			line(x, y, x-step, y);
 			x-=step;
 			break;
-		case "UP":
+		case 'U':
 			line(x, y, x, y-step);
 			y-=step;
 			break;
-		case "DOWN":
+		case 'D':
 			line(x, y, x, y+step);
 			y+=step;
 			break;
 	}
 }
-
-void drawDragon(ArrayList<String> o1){
+void drawDragon(ArrayList<Character> o1){
 	float origX=x, origY=y;
-	for(String dir:o1)
+	for(Character dir:o1)
 		go(dir);
 	x=origX;
 	y=origY;
 }
 
-//accessory function for O1andF1toO2
-String reverseDir(String dir){
+//accessory for O1andF1toO2
+Character reverseDir(Character dir){
 	switch(dir){
-		case "LEFT": return "RIGHT";
-		case "RIGHT": return "LEFT";
-		case "UP": return "DOWN";
-		case "DOWN":  return "UP";
+		case 'L': return 'R';
+		case 'R': return 'L';
+		case 'U': return 'D';
+		case 'D': return 'U';
 	}
-	return "";
+	return ' ';
 }
